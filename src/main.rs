@@ -9,16 +9,20 @@ fn main() {
 
     home_dir_reset();
 
-    match args[1].as_ref() {
-        "desktop" => desktop(),
-        "list" => {
-            if args.len() > 2 {
-                list(args[2].clone());
-            } else {
-                list(".".to_string());
-            }
-        },
-        _ => println!("Argument does not result in an action"),
+    if args.len() >= 2 {
+        match args[1].as_ref() {
+            "desktop" => desktop(),
+            "list" => {
+                if args.len() > 2 {
+                    list(args[2].clone());
+                } else {
+                    list(".".to_string());
+                }
+            },
+            _ => println!("Argument does not result in an action"),
+        }
+    } else {
+        desktop();
     }
 
 }
@@ -34,8 +38,7 @@ fn move_file(path: String, dir: &str,) {
 
         let mut new_path = split_path.join("/");
 
-        new_path.push_str(&format!("/{}/", dir));
-        new_path.push_str(file_name);
+        new_path.push_str(&format!("/{}/", dir)); new_path.push_str(file_name);
 
         let _rename = fs::rename(path.clone(), new_path.clone());
         println!("Renamed {:?} to {:?}", path, new_path);
